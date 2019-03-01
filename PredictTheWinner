@@ -1,0 +1,42 @@
+class Solution {
+    public boolean PredictTheWinner(int[] nums) {
+       
+      
+        int first[][]=new int[nums.length][nums.length];
+        int second[][]=new int[nums.length][nums.length];
+
+
+        //one element
+        for(int i=0;i<nums.length;i++){
+            first[i][i]=nums[i];
+            //second[i][i]=0;
+        }
+
+        //two elements
+        for(int i=0;i<nums.length-1;i++)
+        {
+            first[i][i+1]=Math.max(nums[i],nums[i+1]);
+            second[i][i+1]=Math.min(nums[i],nums[i+1]);
+        }
+
+        //filling diagonally
+        if(nums.length>2){
+
+
+            for(int l=2; l < nums.length; l++){
+                for(int i=0; i < nums.length - l; i++){
+                    int j = i + l;
+                    first[i][j]=Math.max(nums[i]+second[i+1][j],nums[j]+second[i][j-1]);
+                    int sum=0;
+                    for(int s=i;s<=j;s++)
+                        sum+=nums[s];
+                    second[i][j]=sum-first[i][j];
+                }
+
+            }
+
+        }
+
+        return (first[0][nums.length-1]>=second[0][nums.length-1]);
+    }
+}
