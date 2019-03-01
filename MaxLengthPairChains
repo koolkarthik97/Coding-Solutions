@@ -1,0 +1,19 @@
+class Solution {
+    public int findLongestChain(int[][] pairs) {
+          int n=pairs.length;
+
+     Arrays.sort(pairs, (a,b)-> a[1]-b[1]);
+
+     int cur=Integer.MIN_VALUE,ans=0;
+     for(int[] pair:pairs) {
+         System.out.println(pair[0] + "   " + pair[1]);
+         if (cur < pair[0]) {
+             ans++;
+             cur=pair[1];
+         }
+
+
+     }
+        return (ans);
+    }
+}
