@@ -1,0 +1,30 @@
+public static void main(String[] args) {
+
+        //min No. of jumps to reach the end of the array: DP
+       int[] nums=new int[]{2,3,1,1,2,4,2,0,1,1};
+       int[] dp=new int[nums.length];
+       for(int i=0;i<nums.length;i++){
+           dp[i]=Integer.MAX_VALUE;
+       }
+
+       //base;
+        dp[0]=0;
+       for(int i=1;i<=nums[0] && i<nums.length;i++)
+           dp[i]=1;
+
+       if(nums.length>=nums[0]) {
+           for (int i = nums[0] + 1;i<nums.length;i++){
+               //see all possible values from 0 to i-1;
+               for(int k=0;k<i;k++){
+                   //check if reachable or not
+                   if((i-k)<=nums[k]){
+                       dp[i]=Math.min(dp[i],1+dp[k]);
+                   }
+               }
+           }
+       }
+
+
+  System.out.println(dp[nums.length-1];
+}
+    
