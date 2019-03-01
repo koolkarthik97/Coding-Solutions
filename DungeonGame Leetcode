@@ -1,0 +1,22 @@
+class Solution {
+    public int calculateMinimumHP(int[][] grid) {
+        int minHealth[][]=new int[grid.length][grid[0].length];
+
+        for(int i=grid.length-1;i>=0;i--){
+            for(int j=grid[0].length-1;j>=0;j--){
+                //base case
+                if(i==grid.length-1 && j==grid[0].length-1)
+                    minHealth[i][j]=Math.max(1,1-grid[i][j]);
+                //row
+                else if(i==grid.length-1)
+                    minHealth[i][j]=Math.max(1,minHealth[i][j+1]-grid[i][j]);
+                //col
+                else if(j==grid[0].length-1)
+                    minHealth[i][j]=Math.max(1,-grid[i][j]+minHealth[i+1][j]);
+                else
+                    minHealth[i][j]=Math.max(1,-grid[i][j]+Math.min(minHealth[i+1][j],minHealth[i][j+1]));
+            }
+        }
+        return minHealth[0][0];
+    }
+}
