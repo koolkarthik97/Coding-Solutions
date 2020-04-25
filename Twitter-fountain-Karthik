@@ -1,0 +1,32 @@
+public class Solution {
+    public static void main(String args[]) {
+        List<Integer> list=new ArrayList<>(Arrays.asList(1,2,1));
+        System.out.println(fountainActivation(list));
+    }
+
+    private static int fountainActivation(List<Integer> a) {
+        int fcount=1;
+        int[] coveredArea=new int[a.size()];
+        Arrays.fill(coveredArea,0);
+
+        for(int i=0;i<a.size();i++){
+            int left=Math.max(i-a.get(i),0);
+            int right=Math.min(a.size(),i+a.get(i)+1);
+            coveredArea[left]=Math.max(coveredArea[left],right);
+        }
+
+        int right=coveredArea[0],nextOnRight=0;
+        for(int i=0;i<a.size();i++){
+            nextOnRight=Math.max(nextOnRight,coveredArea[i]);
+            if(i==right)
+            {
+                fcount++;
+                right=nextOnRight;
+            }
+        }
+
+    for(int x:coveredArea)
+        System.out.print(x+" ");
+    return fcount;
+    }
+}

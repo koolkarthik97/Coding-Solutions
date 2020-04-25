@@ -1,0 +1,55 @@
+public class Solution {
+    static TreeMap<Integer,Integer> map=new TreeMap<>(); //contains id:expiry time
+    static int current_time=0;
+
+    public static int numberOfTokens(int expiryLimit, List<List<Integer>> commands) {
+        // Write your code here
+        for(List<Integer> command:commands){
+            int type=command.get(0);
+            int id=command.get(1);
+            int time=command.get(2);
+            current_time=time;
+
+            //reset logic
+            if(type==1){
+                if(map.containsKey(id)){
+                    //check if alive or not
+                    if(current_time>map.get(id))
+                        continue;
+                }else{
+                    continue;
+                }
+            }
+            //get or if reset the token
+            map.put(id,time+expiryLimit);
+            System.out.println(map);
+
+        }
+        System.out.println(current_time);
+        return aliveTokenCount();
+
+    }
+
+    private static int aliveTokenCount() {
+        int count=0;
+        for(int time:map.values()){
+            count+=(time>=current_time)?1:0;
+        }
+        return count;
+    }
+
+    public static void main(String args[]) {
+        int exp=3;
+        List<List<Integer>> list=new ArrayList<>();
+        List<Integer> sublist;
+        sublist=new ArrayList<>(Arrays.asList(0,1,1));
+        list.add(sublist);
+        sublist=new ArrayList<>(Arrays.asList(1,1,4));
+        list.add(sublist);
+        sublist=new ArrayList<>(Arrays.asList(1,2,5));
+        list.add(sublist);
+
+        System.out.println(numberOfTokens(exp,list));
+
+    }
+}

@@ -1,0 +1,65 @@
+import java.util.*;
+
+class Solution {
+    static int time = 0;
+    static int[] disc,low;
+
+    static void dfs(int u, List<Integer>[] graph, List<List<Integer>> res, int pre){
+        disc[u] = low[u] = ++time;
+        for (int j = 0; j < graph[u].size(); j++){
+            int v = graph[u].get(j);
+            if (v == pre) {
+                continue;
+            }
+            if (disc[v] != -1){
+                low[u] = Math.min(low[u], disc[v]); //u-->v .. u's low becomes id of v minimum.
+            }else{
+                dfs(v, graph, res, u);
+                low[u] = Math.min(low[u], low[v]);
+                //condition for bridge..
+                if (low[v] > disc[u]){
+                    res.add(Arrays.asList(u, v));
+                }
+
+            }
+        }
+    }
+
+    static List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections){
+        disc=new int[n];
+        low = new int[n];
+        List<Integer>[] graph = new ArrayList[n];
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.fill(disc, -1); // use disc to track if visited (disc[i] == -1)
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < connections.size(); i++) {
+            int from = connections.get(i).get(0), to = connections.get(i).get(1);
+            graph[from].add(to);
+            graph[to].add(from);
+        }
+        for (int i = 0; i < n; i++) {
+            if (disc[i] == -1) {
+                dfs(i, graph, res, -1);
+            }
+        }
+        return res;
+    }
+    public static void main(String args[]) {
+
+        ArrayList<List<Integer>> list= new ArrayList<>();
+        ArrayList<Integer> l=new ArrayList();
+        l.add(0);l.add(1);
+        list.add(l);
+        l=new ArrayList<>();
+        l.add(1);l.add(2);list.add(l);
+        l=new ArrayList<>();
+        l.add(2);l.add(0);list.add(l);
+        l=new ArrayList<>();
+        l.add(1);l.add(3);list.add(l);
+        System.out.println(list);
+        System.out.println(criticalConnections(4,list));
+    }
+
+}

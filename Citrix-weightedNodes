@@ -1,0 +1,25 @@
+public static void main(String args[]) {
+        int[] from=new int[]{1,2,2,2,4};
+        int[] to=new int[]{2,1,3,3,4};
+        Map<ArrayList<Integer>,Integer> map=new HashMap<>();
+
+        for(int i=0;i<from.length;i++){
+            ArrayList<Integer> list=new ArrayList<>();
+            list.add(from[i]);
+            list.add(to[i]);
+            Collections.sort(list);
+            map.put(list,map.getOrDefault(list,0)+1);
+        }
+        int max=Integer.MIN_VALUE;
+        for(int x:map.values())
+            max=Math.max(x,max);
+
+        int ans=Integer.MIN_VALUE;
+        for(Map.Entry<ArrayList<Integer>,Integer> entry:map.entrySet()){
+            if(entry.getValue()==max) {
+                ans = Math.max(ans, entry.getKey().get(0) * entry.getKey().get(1));
+            }
+        }
+        System.out.println("ans : "+ans);
+
+    }

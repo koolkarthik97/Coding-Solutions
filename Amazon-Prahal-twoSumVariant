@@ -1,0 +1,41 @@
+
+import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.IntStream;
+
+public class Solution {
+    public static void main(String args[]){
+        int truckCap=90;
+        int []load=new int[]{25,1,1,35,90};
+
+        int n=load.length;
+        truckCap-=30;
+        HashMap<Integer,Integer> map=new HashMap<>();
+        //map --> value, index
+        for(int i=0;i<load.length;i++)
+            map.put(load[i],i);
+        int curr_max=-1;
+        int s_i=-1;
+        int s_j=-1;
+        for(int i=0;i<n;i++){
+            int remaining=truckCap-load[i];
+            if(map.keySet().contains(remaining)){
+                 int j=map.get(remaining);
+                 if(j!=i){
+                     int v1=load[i];
+                     int v2=load[j];
+                     int tempMax=Math.max(v1,v2);
+                     if(tempMax>curr_max){
+                         s_i=i;
+                         s_j=j;
+                     }
+                 }
+            }
+        }
+        System.out.println(s_i+" "+s_j);
+
+    }
+}

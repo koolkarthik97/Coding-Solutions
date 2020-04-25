@@ -1,0 +1,33 @@
+public static void main(String args[]){
+            String s="ABBCZBAC";
+
+            HashMap<Character,Integer> map=new HashMap<>();
+            map.put('A',0);
+            map.put('B',0);
+            map.put('C',0);
+
+            int ans=0;
+            char[] str=s.toCharArray();
+            int i=0,j=0;
+            while(i<str.length){
+                while(j<str.length){
+                    if(map.keySet().contains(str[j])){
+                        map.put(str[j],map.get(str[j])+1);
+                        if(map.get('A')>0 && map.get('B')>0 && map.get('C')>0){
+                            ans+=str.length-j;
+                            if(map.keySet().contains(str[i]) && map.get(str[i])>0){
+                                map.put(str[i],map.get(str[i])-1);
+                            }
+                            i++;
+                        }
+                    }
+                    j++;
+                }
+                if(map.keySet().contains(str[i]) && map.get(str[i])>0){
+                    map.put(str[i],map.get(str[i])-1);
+                }
+                i++;
+            }
+            System.out.println(ans);
+
+    }

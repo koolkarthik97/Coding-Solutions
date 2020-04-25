@@ -1,0 +1,165 @@
+
+import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.List;
+import java.util.stream.IntStream;
+
+public class Solution {
+    static int count(String a, String b, int m, int n)
+    {
+        if ((m == 0 && n == 0) || n == 0)
+            return 1;
+
+        if (m == 0)
+            return 0;
+
+        if (a.charAt(m - 1) == b.charAt(n - 1))
+            return count(a, b, m - 1, n - 1) +
+                    count(a, b, m - 1, n);
+        else
+            return count(a, b, m - 1, n);
+    }
+    static boolean count_1(String a, String b, int m, int n, int nSize, boolean prevMatch)
+    {
+        if (n == 0 && !prevMatch) {
+            return true;
+        } else if (m == 0 || n == 0) {
+            return false;
+        } else {
+            boolean matchAns = false;
+            if (a.charAt(m - 1) == b.charAt(n - 1)) {
+                if(n == nSize) {
+                    matchAns = count_1(a, b, m - 1, n - 1, nSize, true);
+                } else {
+                    matchAns = count_1(a, b, m - 1, n - 1, nSize, prevMatch);
+                }
+            }
+            return matchAns || count_1(a, b, m - 1, n, nSize, false);
+        }
+    }
+
+    public static void main(String[] args) {
+        String a = "litt";
+        String b = "lit";
+        if (count_1(a, b, a.length(), b.length(), b.length(), false)) {
+            System.out.println("yes");
+        } else {
+            System.out.println("no");
+        }
+    }
+    public static void main_1(String args[]) {
+       List<String> words=new ArrayList<>(Arrays.asList("curtail",
+               "scion",
+               "barren",
+               "amicable",
+               "departed",
+               "blossom"));
+
+
+       List<String> wordsToSynomyms=new ArrayList<>();
+       wordsToSynomyms.add("scion:son");
+       wordsToSynomyms.add("blossom:bloom");
+       wordsToSynomyms.add("curtail:cut");
+
+       List<String> wordsToAntonyms=new ArrayList<>();
+
+
+
+        HashSet<String> synonymCousins=new HashSet<>();
+        HashSet<String> antonymCousins=new HashSet<>();
+
+       HashMap<String,ArrayList> synonymMap=new HashMap<>();
+       for(String synonym:wordsToSynomyms){
+           synonym=synonym.toLowerCase();
+           String sarr[]=synonym.split(":");
+           synonymMap.put(sarr[0],new ArrayList());
+           for(String s:sarr[1].split(",")) {
+               synonymMap.get(sarr[0]).add(s);
+           }
+       }
+
+
+       int res=0;
+        HashMap<String,ArrayList> antonymMap=new HashMap<>();
+        for(String antonym:wordsToAntonyms){
+            antonym=antonym.toLowerCase();
+            String sarr[]=antonym.split(":");
+            antonymMap.put(sarr[0],new ArrayList());
+            for(String s:sarr[1].split(",")) {
+                antonymMap.get(sarr[0]).add(s);
+
+            }
+        }
+
+        //System.out.println(antonymMap);
+        //System.out.println(synonymMap);
+        int c=0;
+
+        for(String word:words){
+            //check for synomyms
+            word=word.toLowerCase();
+            if(synonymMap.containsKey((Object)word)){
+                ArrayList<String> list=synonymMap.get(word);
+                for(String syn:list){
+//                    c=count(word,syn,word.length(),syn.length());
+////                    if(c>1) {
+////                        res += 1;
+////                        if(synonymCousins.contains(syn))
+////                            res+=1;
+////                        else
+////                            synonymCousins.add(syn);
+////                    }
+////                    else if(c==1){
+////                        if(!word.contains(syn)) {
+////                            res += 1;
+////                            if(synonymCousins.contains(syn))
+////                                res+=1;
+////                            else
+////                                synonymCousins.add(syn);
+////                        }
+////                    }
+                    if(count_1(word,syn,word.length(),syn.length(), syn.length(), false)) {
+                        res+=1;
+                        if(synonymCousins.contains(syn))
+                            res+=1;
+                    } else {
+                        synonymCousins.add(syn);
+                    }
+                }
+            }
+            if(antonymMap.containsKey((Object)word)){
+                ArrayList<String> list=antonymMap.get(word);
+                for(String syn:list){
+                    c=count(word,syn,word.length(),syn.length());
+//                    if(c>1) {
+//                        res -= 1;
+//                        if(antonymCousins.contains(syn))
+//                            res-=1;
+//                        else
+//                            antonymCousins.add(syn);
+//                    }
+//                    else if(c==1){
+//                        if(!word.contains(syn)) {
+//                            res -= 1;
+//                            if(antonymCousins.contains(syn))
+//                                res-=1;
+//                            else
+//                                antonymCousins.add(syn);
+//
+//                        }
+//                    }
+                    if(count_1(word,syn,word.length(),syn.length(), syn.length(), false)) {
+                        res-=1;
+                        if(antonymCousins.contains(syn))
+                            res-=1;
+                    } else {
+                        antonymCousins.add(syn);
+                    }
+                }
+            }
+        }
+        System.out.println(res);
+
+    }
+}

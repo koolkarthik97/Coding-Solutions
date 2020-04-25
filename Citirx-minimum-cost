@@ -1,0 +1,17 @@
+public static void main(String args[]) {
+        int n=4;
+        int[] prices=new int[]{4,9,2,3};
+        int cost=0;
+
+        cost+=prices[0];
+        int min=prices[0];
+
+        for(int i=1;i<prices.length;i++){
+            cost+=Math.max(0,prices[i]-min);
+            min=Math.min(min,prices[i]);
+        }
+
+        System.out.println(cost);
+
+
+    }

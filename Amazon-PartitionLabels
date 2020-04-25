@@ -1,0 +1,40 @@
+import java.lang.reflect.Array;
+import java.util.*;
+
+class Solution {
+    public static void main(String args[]) {
+       String S="qiejxqfnqceocmy";
+        System.out.println(partitionLabels(S));
+    }
+
+    private static List<Integer> partitionLabels(String s) {
+        List<Integer> ans=new ArrayList<>();
+
+        int i=0,j=s.length()-1;
+        HashMap<Character,Integer> map=new HashMap<>();
+
+        while(j>=0){
+            char ch=s.charAt(j);
+            if(!map.containsKey(ch))
+                map.put(ch,j);
+            j--;
+        }
+
+
+        while(i<s.length()){
+            char first_ch=s.charAt(i);
+            int last_index=map.get(first_ch);
+            int k=i;
+            while(k<last_index) {
+                last_index = Math.max(last_index, map.get(s.charAt(k)));
+                k++;
+            }
+            ans.add(last_index-i+1);
+            i=last_index+1;
+        }
+
+        System.out.println(map);
+        return ans;
+    }
+
+}
